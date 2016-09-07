@@ -1,4 +1,4 @@
-# Fusiontables library for Java
+# Fusiontables library for Java [![Build Status](https://travis-ci.org/espr-it/fusiontables.svg?branch=master)](https://travis-ci.org/espr-it/fusiontables)
 
 The package tries to simplify access to your fusion tables data using Table objects. It allows to query, save and delete data in fusion table while supporting batching operation for insertion, mapping POJO to tables and storing Json objects as a texts into fusion table fields. 
 
