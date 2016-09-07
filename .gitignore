@@ -3,3 +3,5 @@
 target
 .settings
 src/test/resources/test-espr-it-app-engine-service-account.p12
+pom.xml.releaseBackup
+release.properties
