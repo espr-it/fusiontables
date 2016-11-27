@@ -3,7 +3,7 @@
 
 	<groupId>it.espr</groupId>
 	<artifactId>esprit-fusiontables</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>esprit-fusiontables</name>
@@ -30,7 +30,7 @@
 		<connection>scm:git:git@github.com/espr-it/fusiontables.git</connection>
 		<developerConnection>scm:git:git@github.com:espr-it/fusiontables.git</developerConnection>
 		<url>http://github.com/espr-it/fusiontables/tree/master</url>
-	  <tag>esprit-fusiontables-0.0.3</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<distributionManagement>
