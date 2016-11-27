@@ -21,6 +21,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.services.fusiontables.Fusiontables;
+import com.google.api.services.fusiontables.FusiontablesScopes;
 import com.google.api.services.fusiontables.model.Sqlresponse;
 
 public class Engine {
@@ -48,25 +49,38 @@ public class Engine {
 
 	private Fusiontables fusiontables;
 
-	private final String serviceAccountPrivateKeyFile;
+	private final String serviceAccountPrivateP12KeyFile;
+
+	private final String serviceAccountPrivateJsonKeyFile;
 
 	private final String serviceAccountId;
 
 	private static final Collection<String> SCOPES = new ArrayList<>();
 
 	static {
-		SCOPES.add("http://www.google.com/fusiontables/api/query");
+		SCOPES.add(FusiontablesScopes.FUSIONTABLES);
+	}
+
+	public Engine(String serviceAccountPrivateJsonKeyFile) {
+		this.serviceAccountPrivateJsonKeyFile = serviceAccountPrivateJsonKeyFile;
+		this.serviceAccountId = null;
+		this.serviceAccountPrivateP12KeyFile = null;
 	}
 
 	public Engine(String serviceAccountPrivateKeyFile, String serviceAccountId) {
-		this.serviceAccountPrivateKeyFile = serviceAccountPrivateKeyFile;
+		this.serviceAccountPrivateJsonKeyFile = null;
+		this.serviceAccountPrivateP12KeyFile = serviceAccountPrivateKeyFile;
 		this.serviceAccountId = serviceAccountId;
 	}
 
 	private Fusiontables fusion() throws Exception {
 		if (credential == null) {
-			File key = new File(this.getClass().getResource(this.serviceAccountPrivateKeyFile).toURI());
-			this.credential = new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT).setJsonFactory(JSON_FACTORY).setServiceAccountScopes(SCOPES).setServiceAccountPrivateKeyFromP12File(key).setServiceAccountId(this.serviceAccountId).build();
+			if (this.serviceAccountPrivateJsonKeyFile != null) {
+				this.credential = GoogleCredential.fromStream(this.getClass().getResourceAsStream(this.serviceAccountPrivateJsonKeyFile)).createScoped(SCOPES);
+			} else {
+				File key = new File(this.getClass().getResource(this.serviceAccountPrivateP12KeyFile).toURI());
+				this.credential = new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT).setJsonFactory(JSON_FACTORY).setServiceAccountScopes(SCOPES).setServiceAccountPrivateKeyFromP12File(key).setServiceAccountId(this.serviceAccountId).build();
+			}
 			this.fusiontables = new Fusiontables.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName("aotearoa.beer").build();
 		}
 		return this.fusiontables;
